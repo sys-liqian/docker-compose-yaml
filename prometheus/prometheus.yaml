@@ -1,0 +1,34 @@
+# prometheus配置文件
+
+#全局配置
+global:
+  scrape_interval: 15s # 抓取时间间隔，默认1分钟
+  evaluation_interval: 15s # 规则评估时间间隔，默认一分钟
+  # scrape_timeout is set to the global default (10s).
+
+# alert manager配置
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 172.25.16.5:9093 #alertmanager ip:端口
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "rules/*" # prometheus规则文件路径，这里取相对目录rules下的所有文件
+
+# 抓取配置
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # 配置node-exporter地址，我这里配置的是node-problem-detector地址
+    static_configs:
+      - targets: ["172.25.16.2:20257"]
+      - targets: ["172.25.16.3:20257"]
+
+  - job_name: "pushgateway"
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["172.25.16.5:9091"]
+    #honor_labels: true

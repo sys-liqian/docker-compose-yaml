@@ -1,0 +1,18 @@
+#alertmanager 配置文件
+
+global:
+  smtp_smarthost: 'smtp.163.com:25' #163邮箱smtp地址
+  smtp_from: 'xxxx@163.com' #发送者邮箱账号
+  smtp_auth_username: 'xxxx@163.com' #发送者邮箱账号
+  smtp_auth_password: 'XXXX' #smtp密码
+  smtp_require_tls: false   #tls要设置后才能发送成功，默认是true
+
+route:
+  group_interval: 1m   #一组已发送初始通知的告警接收到新告警后，再次发送通知前等待的时间（一般设置为5分钟或更多）
+  repeat_interval: 1m  #一条成功发送的告警，在再次发送通知之前等待的时间。 （通常设置为3小时或更长时间）
+  receiver: 'mail-receiver' #对应receivers中的接收者
+
+receivers:
+  - name: 'mail-receiver'
+    email_configs:
+      - to: 'xxxx@163.com' #告警邮件接收着

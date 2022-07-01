@@ -1,0 +1,11 @@
+groups:
+  - name: cpu_load_5m
+    rules:
+      - alert: cpu_load_5m #指标名
+        expr: cpu_load_5m{instance="172.25.16.2:20257", job="prometheus"} > 1 #告警表达式
+        for: 0s #只要表达式成立触发一次就告警
+        labels:
+          severity: warning #告警级别
+        annotations:
+          description: '{{$labels.instance}}: cpu_load_5m (current value is:{{ $value }})'
+          summary: '{{$labels.instance}}: cpu_load_5m '
